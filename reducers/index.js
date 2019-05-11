@@ -1,3 +1,2 @@
-import reducer from "./root";
-
-export default reducer;
+export * from "./products";
+export * from "./shoppingList";

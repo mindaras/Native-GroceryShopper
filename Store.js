@@ -1,10 +1,13 @@
 import React, { createContext, useReducer } from "react";
-import shoppingList, {
+import {
+  products,
+  productsInitialState,
+  shoppingList,
   shoppingListInitialState
-} from "./reducers/shoppingList";
+} from "./reducers";
 
 const initialState = {
-  products: {},
+  products: productsInitialState,
   shoppingList: shoppingListInitialState
 };
 
@@ -14,6 +17,8 @@ const reducer = (state, action) => {
   switch (reducerType) {
     case "shoppingList":
       return shoppingList(state, action);
+    case "products":
+      return products(state, action);
     default:
       return state;
   }

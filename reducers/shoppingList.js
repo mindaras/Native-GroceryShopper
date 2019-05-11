@@ -17,13 +17,13 @@ export const shoppingListInitialState = {
     type: "sweets"
   },
   "32023sdf40sdf": {
-    name: "Orange",
+    name: "Milk",
     price: "2.59",
-    type: "fruits"
+    type: "milk"
   }
 };
 
-export default (state = {}, action) => {
+export const shoppingList = (state, action) => {
   switch (action.type) {
     case REMOVE_ITEM_FROM_SHOPPING_LIST:
       const newState = { ...state };

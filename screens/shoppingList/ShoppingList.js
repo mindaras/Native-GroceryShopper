@@ -1,4 +1,4 @@
-import React, { useContext, memo } from "react";
+import React, { useContext, useCallback, memo } from "react";
 import { StyleSheet, SafeAreaView, FlatList, View, Text } from "react-native";
 import Swipeout from "react-native-swipeout";
 import { colors } from "../../common";
@@ -15,28 +15,40 @@ const generateBorderColor = type => {
       return colors.meat;
     case "milk":
       return colors.milk;
+    case "fruits":
+      return colors.fruits;
+    default:
+      return "#fff";
   }
-};
-
-const deleteItem = ({ id, dispatch }) => () => {
-  dispatch({ type: REMOVE_ITEM_FROM_SHOPPING_LIST, id });
 };
 
 const Product = memo(({ id, name, price, type, index }) => {
   const { dispatch } = useContext(StoreContext);
-
-  const swipeoutButtons = [
+  const deleteItem = useCallback(
+    () => dispatch({ type: REMOVE_ITEM_FROM_SHOPPING_LIST, id }),
+    [id]
+  );
+  const leftSwipeOutButtons = [
+    {
+      text: "Bought",
+      backgroundColor: colors.bought,
+      underlayColor: colors.boughtSecondary,
+      color: "#fff",
+      onPress: () => {}
+    }
+  ];
+  const rightSwipeoutButtons = [
     {
       text: "Delete",
       backgroundColor: colors.delete,
       underlayColor: colors.deleteSecondary,
       color: "#fff",
-      onPress: deleteItem({ id, dispatch })
+      onPress: deleteItem
     }
   ];
 
   return (
-    <Swipeout right={swipeoutButtons}>
+    <Swipeout left={leftSwipeOutButtons} right={rightSwipeoutButtons}>
       <View
         style={[
           styles.item,
@@ -54,20 +66,28 @@ const Product = memo(({ id, name, price, type, index }) => {
   );
 });
 
-const renderProducts = () => {
-  const { store } = useContext(StoreContext);
-  const { shoppingList } = store;
-
-  return Object.entries(shoppingList).map(([id, { name, price, type }], i) => (
-    <Product key={id} id={id} name={name} price={price} type={type} index={i} />
-  ));
+const renderItem = ({ item, index }) => {
+  const [id, { name, price, type }] = item;
+  return (
+    <Product
+      key={id}
+      id={id}
+      name={name}
+      price={price}
+      type={type}
+      index={index}
+    />
+  );
 };
 
 const ShoppingList = () => {
+  const { store } = useContext(StoreContext);
+  const shoppingList = Object.entries(store.shoppingList);
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Shopping list</Text>
-      {renderProducts()}
+      <FlatList data={shoppingList} renderItem={renderItem} />
     </SafeAreaView>
   );
 };
