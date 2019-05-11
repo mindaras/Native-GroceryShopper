@@ -6,11 +6,18 @@ export default {
   border: "#b3b5b7",
   bought: "#00a83d",
   boughtSecondary: "#007a28",
+  edit: "#ffda0c",
+  editSecondary: "#f7d413",
   delete: "#e80000",
   deleteSecondary: "#d10000",
   greens: "#13a500",
   sweets: "#ad008a",
   meat: "#890009",
+  fruits: "#ffa73d",
   milk: "#ddd9d9",
-  fruits: "#ffa73d"
+  transparentGreen: opacity => `rgba(19, 165, 0, ${opacity})`,
+  transparentSweets: opacity => `rgba(173, 0, 138, ${opacity})`,
+  transparentMeat: opacity => `rgba(137, 0, 9, ${opacity})`,
+  transparentFruits: opacity => `rgba(255, 167, 61, ${opacity})`,
+  transparentMilk: opacity => `rgba(221, 217, 217, ${opacity})`
 };

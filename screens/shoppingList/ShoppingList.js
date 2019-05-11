@@ -67,7 +67,7 @@ const Product = memo(({ id, name, price, type, index }) => {
 });
 
 const renderItem = ({ item, index }) => {
-  const [id, { name, price, type }] = item;
+  const { id, name, price, type } = item;
   return (
     <Product
       key={id}
@@ -82,7 +82,7 @@ const renderItem = ({ item, index }) => {
 
 const ShoppingList = () => {
   const { store } = useContext(StoreContext);
-  const shoppingList = Object.entries(store.shoppingList);
+  const shoppingList = Object.values(store.shoppingList);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: colors.primary,
-    marginVertical: 30
+    marginTop: 30,
+    marginBottom: 60
   },
   list: {
     flex: 1

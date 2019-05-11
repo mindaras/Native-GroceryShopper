@@ -4,10 +4,30 @@ export const productsInitialState = {
       id: 1,
       name: "Salad",
       price: 2.59
+    },
+    2: {
+      id: 1,
+      name: "Salad",
+      price: 2.59
+    },
+    3: {
+      id: 1,
+      name: "Salad",
+      price: 2.59
     }
   },
   meat: {
     2: {
+      id: 2,
+      name: "Chicken",
+      price: 3.48
+    },
+    3: {
+      id: 2,
+      name: "Chicken",
+      price: 3.48
+    },
+    4: {
       id: 2,
       name: "Chicken",
       price: 3.48
