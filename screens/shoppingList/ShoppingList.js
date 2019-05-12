@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, FlatList, View, Text } from "react-native";
 import Swipeout from "react-native-swipeout";
 import { colors } from "../../common";
 import { StoreContext } from "../../Store";
-import { REMOVE_ITEM_FROM_SHOPPING_LIST } from "../../actionTypes";
+import { REMOVE_ITEM_FROM_SHOPPING_LIST } from "../../dispatchTypes";
 
 const generateBorderColor = type => {
   switch (type) {

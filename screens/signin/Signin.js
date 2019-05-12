@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -6,11 +6,17 @@ import {
   TouchableHighlight,
   Text
 } from "react-native";
+import { StoreContext } from "../../Store";
+import { SIGNIN } from "../../dispatchTypes";
 import { colors } from "../../common";
 
 const Signin = () => {
+  const { dispatch } = useContext(StoreContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const signin = useCallback(() => {
+    dispatch({ type: SIGNIN, username, password });
+  }, [username, password]);
 
   return (
     <View style={styles.container}>
@@ -28,11 +34,11 @@ const Signin = () => {
         style={styles.input}
       />
       <TouchableHighlight
-        onPress={() => {}}
+        onPress={signin}
         underlayColor={colors.primaryVariant}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>Signin</Text>
       </TouchableHighlight>
     </View>
   );

@@ -3,12 +3,15 @@ import {
   products,
   productsInitialState,
   shoppingList,
-  shoppingListInitialState
+  shoppingListInitialState,
+  auth,
+  authInitialState
 } from "./reducers";
 
 const initialState = {
   products: productsInitialState,
-  shoppingList: shoppingListInitialState
+  shoppingList: shoppingListInitialState,
+  auth: authInitialState
 };
 
 const reducer = (state, action) => {
@@ -19,6 +22,8 @@ const reducer = (state, action) => {
       return shoppingList(state, action);
     case "products":
       return products(state, action);
+    case "auth":
+      return auth(state, action);
     default:
       return state;
   }

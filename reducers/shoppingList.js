@@ -1,4 +1,4 @@
-import { REMOVE_ITEM_FROM_SHOPPING_LIST } from "../actionTypes";
+import { REMOVE_ITEM_FROM_SHOPPING_LIST } from "../dispatchTypes";
 
 export const shoppingListInitialState = {
   "3202340sdf": {
