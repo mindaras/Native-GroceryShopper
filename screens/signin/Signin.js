@@ -32,7 +32,7 @@ const Signin = () => {
         underlayColor={colors.primaryVariant}
         style={styles.button}
       >
-        <Text style={styles.text}>Login</Text>
+        <Text style={styles.buttonText}>Login</Text>
       </TouchableHighlight>
     </View>
   );
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: colors.border,
     width: "80%",
+    paddingHorizontal: 5,
     paddingBottom: 5,
     marginBottom: 30
   },
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 12
   },
-  text: {
-    color: "#FFF"
+  buttonText: {
+    color: "#fff"
   }
 });
