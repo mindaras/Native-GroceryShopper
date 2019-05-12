@@ -1,43 +1,50 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import {
   StyleSheet,
   SafeAreaView,
   View,
   Text,
   TextInput,
+  Picker,
   TouchableHighlight
 } from "react-native";
-import { StoreContext } from "../../Store";
 import { colors } from "../../common";
 
-const ProductDetails = ({ id, type }) => {
-  const { store } = useContext(StoreContext);
-  const { products } = store;
-  const { name, price } = products[type][id];
-  const capitalizedType = `${type[0].toUpperCase()}${type.slice(1)}`;
-  const [localName, setLocalName] = useState(name);
-  const [localPrice, setLocalPrice] = useState(price.toString());
+const AddProduct = () => {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [type, setType] = useState("");
+  const [typeFocused, setTypeFocused] = useState(false);
+  const togglePicker = useCallback(() => setTypeFocused(!typeFocused), [
+    typeFocused
+  ]);
+  const pickerChangeHandler = useCallback(value => setType(value), [
+    typeFocused
+  ]);
+  const capitalizedType = type && `${type[0].toUpperCase()}${type.slice(1)}`;
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Product Details</Text>
-      <View style={styles.detailsContainer}>
+      <Text style={styles.title}>Add product</Text>
+      <View style={styles.inputsContainer}>
         <TextInput
           placeholder="Name"
-          value={localName}
-          onChangeText={setLocalName}
           style={styles.input}
+          onChangeText={setName}
+          value={name}
         />
         <TextInput
           placeholder="Price"
-          value={localPrice}
-          onChangeText={setLocalPrice}
           style={styles.input}
+          onChangeText={setPrice}
+          value={price}
         />
         <TextInput
-          editable={false}
+          placeholder="Type"
+          style={styles.input}
+          onFocus={togglePicker}
+          onBlur={togglePicker}
           value={capitalizedType}
-          style={[styles.input, styles.disabled]}
         />
       </View>
       <TouchableHighlight
@@ -47,23 +54,24 @@ const ProductDetails = ({ id, type }) => {
       >
         <Text style={styles.buttonText}>Save</Text>
       </TouchableHighlight>
+      {typeFocused ? (
+        <Picker selectedValue={type} onValueChange={pickerChangeHandler}>
+          <Picker.Item label="Salad" value="salad" />
+          <Picker.Item label="Meat" value="meat" />
+          <Picker.Item label="Sweets" value="sweets" />
+          <Picker.Item label="Fruits" value="fruits" />
+          <Picker.Item label="Milk" value="milk" />
+        </Picker>
+      ) : null}
     </SafeAreaView>
   );
 };
 
-ProductDetails.defaultProps = {
-  id: 3,
-  type: "meat"
-};
-
-export default ProductDetails;
+export default AddProduct;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  detailsContainer: {
-    paddingHorizontal: 20
   },
   title: {
     textAlign: "center",
@@ -73,10 +81,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 60
   },
-  name: {
-    fontWeight: "bold",
-    paddingHorizontal: 20,
-    marginBottom: 15
+  inputsContainer: {
+    paddingHorizontal: 20
   },
   input: {
     borderBottomWidth: 1,
@@ -85,9 +91,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingBottom: 5,
     marginBottom: 30
-  },
-  disabled: {
-    opacity: 0.5
   },
   button: {
     alignSelf: "center",
