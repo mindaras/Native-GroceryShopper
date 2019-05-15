@@ -9,11 +9,14 @@ import {
   TouchableHighlight
 } from "react-native";
 import { colors } from "../../common";
+import { StoreContext } from "../../Store";
+import { addItemToProducts } from "../../actions";
 
-const AddProduct = () => {
+const AddProduct = ({ navigation }) => {
+  const { dispatch } = useContext(StoreContext);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("greens");
   const [typeFocused, setTypeFocused] = useState(false);
   const togglePicker = useCallback(() => setTypeFocused(!typeFocused), [
     typeFocused
@@ -22,10 +25,14 @@ const AddProduct = () => {
     typeFocused
   ]);
   const capitalizedType = type && `${type[0].toUpperCase()}${type.slice(1)}`;
+  const saveItem = useCallback(() => {
+    // id will be generated on the server side
+    addItemToProducts(dispatch)({ id: new Date(), name, price, type });
+    navigation.pop();
+  }, [name, price, type]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Add product</Text>
       <View style={styles.inputsContainer}>
         <TextInput
           placeholder="Name"
@@ -48,7 +55,7 @@ const AddProduct = () => {
         />
       </View>
       <TouchableHighlight
-        onPress={() => {}}
+        onPress={saveItem}
         underlayColor={colors.primaryVariant}
         style={styles.button}
       >
@@ -56,15 +63,20 @@ const AddProduct = () => {
       </TouchableHighlight>
       {typeFocused ? (
         <Picker selectedValue={type} onValueChange={pickerChangeHandler}>
-          <Picker.Item label="Salad" value="salad" />
+          <Picker.Item label="Greens" value="greens" />
           <Picker.Item label="Meat" value="meat" />
           <Picker.Item label="Sweets" value="sweets" />
           <Picker.Item label="Fruits" value="fruits" />
           <Picker.Item label="Milk" value="milk" />
+          <Picker.Item label="Drinks" value="drinks" />
         </Picker>
       ) : null}
     </SafeAreaView>
   );
+};
+
+AddProduct.navigationOptions = {
+  title: "Add product"
 };
 
 export default AddProduct;
@@ -73,15 +85,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  title: {
-    textAlign: "center",
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colors.primary,
-    marginTop: 30,
-    marginBottom: 60
-  },
   inputsContainer: {
+    marginTop: 200,
     paddingHorizontal: 20
   },
   input: {

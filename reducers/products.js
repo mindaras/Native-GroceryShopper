@@ -1,61 +1,45 @@
-export const productsInitialState = {
-  greens: {
-    1: {
-      id: 1,
-      name: "Salad",
-      price: 2.59
-    },
-    2: {
-      id: 1,
-      name: "Salad",
-      price: 2.59
-    },
-    3: {
-      id: 1,
-      name: "Salad",
-      price: 2.59
-    }
-  },
-  meat: {
-    2: {
-      id: 2,
-      name: "Chicken",
-      price: 3.48
-    },
-    3: {
-      id: 2,
-      name: "Chicken",
-      price: 3.48
-    },
-    4: {
-      id: 2,
-      name: "Chicken",
-      price: 3.48
-    }
-  },
-  sweets: {
-    3: {
-      id: 3,
-      name: "Coca Cola",
-      price: 1.38
-    }
-  },
-  fruits: {
-    4: {
-      id: 4,
-      name: "Orange",
-      price: 0.56
-    }
-  },
-  milk: {
-    5: {
-      id: 5,
-      name: "Cheese",
-      price: 2.17
-    }
-  }
+import {
+  ADD_ITEM_TO_PRODUCTS,
+  UPDATE_ITEM_IN_PRODUCTS,
+  REMOVE_ITEM_FROM_PRODUCTS
+} from "../actions";
+
+export const productsInitialState = {};
+
+const add = (state, action) => {
+  const { id, type, name, price } = action.payload;
+  const newState = { ...state };
+
+  if (!newState.products[type]) newState.products[type] = {};
+
+  newState.products[type][id] = { id, type, name, price };
+
+  return newState;
+};
+
+const update = (state, action) => {
+  const { id, type, name, price } = action.payload;
+  const newState = { ...state };
+  newState.products[type][id] = { id, type, name, price };
+  return newState;
+};
+
+const remove = (state, action) => {
+  const { id, type } = action.payload;
+  const newState = { ...state };
+  delete newState.products[type][id];
+  return newState;
 };
 
 export const products = (state, action) => {
-  return state;
+  switch (action.type) {
+    case ADD_ITEM_TO_PRODUCTS:
+      return add(state, action);
+    case UPDATE_ITEM_IN_PRODUCTS:
+      return update(state, action);
+    case REMOVE_ITEM_FROM_PRODUCTS:
+      return remove(state, action);
+    default:
+      return state;
+  }
 };

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -7,16 +7,24 @@ import {
   Text
 } from "react-native";
 import { StoreContext } from "../../Store";
-import { SIGNIN } from "../../dispatchTypes";
+import { signIn } from "../../actions";
 import { colors } from "../../common";
 
-const Signin = () => {
-  const { dispatch } = useContext(StoreContext);
+const Signin = ({ navigation }) => {
+  const { store, dispatch } = useContext(StoreContext);
+  const {
+    auth: { authenticated }
+  } = store;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const signin = useCallback(() => {
-    dispatch({ type: SIGNIN, username, password });
-  }, [username, password]);
+  const signin = useCallback(() => signIn(dispatch)({ username, password }), [
+    username,
+    password
+  ]);
+
+  useEffect(() => {
+    if (authenticated) navigation.navigate("ShoppingList");
+  }, [authenticated]);
 
   return (
     <View style={styles.container}>
@@ -42,6 +50,10 @@ const Signin = () => {
       </TouchableHighlight>
     </View>
   );
+};
+
+Signin.navigationOptions = {
+  title: "Sign in"
 };
 
 export default Signin;

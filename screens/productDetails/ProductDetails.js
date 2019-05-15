@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -9,18 +9,28 @@ import {
 } from "react-native";
 import { StoreContext } from "../../Store";
 import { colors } from "../../common";
+import { updateItemInProducts } from "../../actions";
 
-const ProductDetails = ({ id, type }) => {
-  const { store } = useContext(StoreContext);
+const ProductDetails = ({ navigation }) => {
+  const { id, type } = navigation.state.params;
+  const { store, dispatch } = useContext(StoreContext);
   const { products } = store;
   const { name, price } = products[type][id];
   const capitalizedType = `${type[0].toUpperCase()}${type.slice(1)}`;
   const [localName, setLocalName] = useState(name);
   const [localPrice, setLocalPrice] = useState(price.toString());
+  const updateItem = useCallback(() => {
+    updateItemInProducts(dispatch)({
+      id,
+      type,
+      name: localName,
+      price: localPrice
+    });
+    navigation.pop();
+  }, [localName, localPrice]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Product Details</Text>
       <View style={styles.detailsContainer}>
         <TextInput
           placeholder="Name"
@@ -41,7 +51,7 @@ const ProductDetails = ({ id, type }) => {
         />
       </View>
       <TouchableHighlight
-        onPress={() => {}}
+        onPress={updateItem}
         underlayColor={colors.primaryVariant}
         style={styles.button}
       >
@@ -51,27 +61,21 @@ const ProductDetails = ({ id, type }) => {
   );
 };
 
-ProductDetails.defaultProps = {
-  id: 3,
-  type: "meat"
+ProductDetails.navigationOptions = {
+  title: "Product details"
 };
 
 export default ProductDetails;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center"
   },
   detailsContainer: {
+    paddingTop: 60,
     paddingHorizontal: 20
-  },
-  title: {
-    textAlign: "center",
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colors.primary,
-    marginTop: 30,
-    marginBottom: 60
   },
   name: {
     fontWeight: "bold",

@@ -10,14 +10,10 @@ export default {
   editSecondary: "#f7d413",
   delete: "#e80000",
   deleteSecondary: "#d10000",
-  greens: "#13a500",
-  sweets: "#ad008a",
-  meat: "#890009",
-  fruits: "#ffa73d",
-  milk: "#ddd9d9",
-  transparentGreen: opacity => `rgba(19, 165, 0, ${opacity})`,
-  transparentSweets: opacity => `rgba(173, 0, 138, ${opacity})`,
-  transparentMeat: opacity => `rgba(137, 0, 9, ${opacity})`,
-  transparentFruits: opacity => `rgba(255, 167, 61, ${opacity})`,
-  transparentMilk: opacity => `rgba(221, 217, 217, ${opacity})`
+  greens: "#6befa2",
+  sweets: "#f8bdfc",
+  meat: "#ff8e8e",
+  fruits: "#ffdaa8",
+  milk: "#f2f2f2",
+  drinks: "#c4edff"
 };

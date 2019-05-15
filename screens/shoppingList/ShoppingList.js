@@ -3,7 +3,8 @@ import { StyleSheet, SafeAreaView, FlatList, View, Text } from "react-native";
 import Swipeout from "react-native-swipeout";
 import { colors } from "../../common";
 import { StoreContext } from "../../Store";
-import { REMOVE_ITEM_FROM_SHOPPING_LIST } from "../../dispatchTypes";
+import { boughtItem, removeItemFromShoppingList } from "../../actions";
+import { Menu } from "../../components";
 
 const generateBorderColor = type => {
   switch (type) {
@@ -17,6 +18,8 @@ const generateBorderColor = type => {
       return colors.milk;
     case "fruits":
       return colors.fruits;
+    case "drinks":
+      return colors.drinks;
     default:
       return "#fff";
   }
@@ -24,8 +27,12 @@ const generateBorderColor = type => {
 
 const Product = memo(({ id, name, price, type, index }) => {
   const { dispatch } = useContext(StoreContext);
+  const boughItem = useCallback(() => boughtItem(dispatch)({ id, type }), [
+    id,
+    type
+  ]);
   const deleteItem = useCallback(
-    () => dispatch({ type: REMOVE_ITEM_FROM_SHOPPING_LIST, id }),
+    () => removeItemFromShoppingList(dispatch)({ id }),
     [id]
   );
   const leftSwipeOutButtons = [
@@ -34,7 +41,7 @@ const Product = memo(({ id, name, price, type, index }) => {
       backgroundColor: colors.bought,
       underlayColor: colors.boughtSecondary,
       color: "#fff",
-      onPress: () => {}
+      onPress: boughItem
     }
   ];
   const rightSwipeoutButtons = [
@@ -66,30 +73,30 @@ const Product = memo(({ id, name, price, type, index }) => {
   );
 });
 
-const renderItem = ({ item, index }) => {
-  const { id, name, price, type } = item;
-  return (
-    <Product
-      key={id}
-      id={id}
-      name={name}
-      price={price}
-      type={type}
-      index={index}
-    />
-  );
-};
+const renderItem = ({ item, index }) => <Product {...item} index={index} />;
 
-const ShoppingList = () => {
-  const { store } = useContext(StoreContext);
+const keyExtractor = ({ id }) => id;
+
+const ShoppingList = ({ navigation }) => {
+  const { store, dispatch } = useContext(StoreContext);
   const shoppingList = Object.values(store.shoppingList);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Shopping list</Text>
-      <FlatList data={shoppingList} renderItem={renderItem} />
-    </SafeAreaView>
+    <>
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={shoppingList}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+        />
+      </SafeAreaView>
+      <Menu navigation={navigation} dispatch={dispatch} />
+    </>
   );
+};
+
+ShoppingList.navigationOptions = {
+  title: "Shopping list"
 };
 
 export default ShoppingList;

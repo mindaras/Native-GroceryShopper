@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Text } from "react-native";
+import React, { useContext } from "react";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 import {
   Signin,
   ShoppingList,
@@ -7,16 +7,35 @@ import {
   ProductDetails,
   AddProduct
 } from "./screens";
-import Store from "./Store";
+import { Menu } from "./components";
+import Store, { StoreContext } from "./Store";
 
-class App extends Component {
-  render() {
-    return (
-      <Store>
-        <AddProduct />
-      </Store>
-    );
+const MainNavigator = createStackNavigator({
+  ShoppingList: { screen: ShoppingList },
+  Products: { screen: Products },
+  ProductDetails: { screen: ProductDetails },
+  AddProduct: { screen: AddProduct }
+});
+
+const Navigator = createAppContainer(MainNavigator);
+
+const Entry = () => {
+  const { store } = useContext(StoreContext);
+  const {
+    auth: { authenticated }
+  } = store;
+
+  if (authenticated) {
+    return <Navigator />;
   }
-}
+
+  return <Signin />;
+};
+
+const App = () => (
+  <Store>
+    <Entry />
+  </Store>
+);
 
 export default App;
