@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import {
   Signin,
@@ -7,7 +7,7 @@ import {
   ProductDetails,
   AddProduct
 } from "./screens";
-import { Menu } from "./components";
+import SplashScreen from "react-native-splash-screen";
 import Store, { StoreContext } from "./Store";
 
 const MainNavigator = createStackNavigator({
@@ -32,10 +32,14 @@ const Entry = () => {
   return <Signin />;
 };
 
-const App = () => (
-  <Store>
-    <Entry />
-  </Store>
-);
+const App = () => {
+  useEffect(() => SplashScreen.hide(), []);
+
+  return (
+    <Store>
+      <Entry />
+    </Store>
+  );
+};
 
 export default App;
