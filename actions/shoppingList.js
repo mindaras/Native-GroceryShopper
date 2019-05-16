@@ -8,7 +8,7 @@ export const addItemToShoppingList = dispatch => payload => {
 };
 
 export const updateItemInShoppingList = dispatch => payload => {
-  dispatch({ type: BOUGHT_ITEM, payload });
+  dispatch({ type: UPDATE_ITEM_IN_SHOPPING_LIST, payload });
 };
 
 export const boughtItem = dispatch => payload => {

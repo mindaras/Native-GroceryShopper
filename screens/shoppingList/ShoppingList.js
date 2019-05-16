@@ -27,13 +27,13 @@ const generateBorderColor = type => {
 
 const Product = memo(({ id, name, price, type, index }) => {
   const { dispatch } = useContext(StoreContext);
-  const boughItem = useCallback(() => boughtItem(dispatch)({ id, type }), [
+  const boughItem = useCallback(() => boughtItem(dispatch)({ id, index }), [
     id,
-    type
+    index
   ]);
   const deleteItem = useCallback(
-    () => removeItemFromShoppingList(dispatch)({ id }),
-    [id]
+    () => removeItemFromShoppingList(dispatch)({ id, index }),
+    [id, index]
   );
   const leftSwipeOutButtons = [
     {
@@ -75,7 +75,7 @@ const Product = memo(({ id, name, price, type, index }) => {
 
 const renderItem = ({ item, index }) => <Product {...item} index={index} />;
 
-const keyExtractor = ({ id }) => id;
+const keyExtractor = ({ id }, index) => `${id}${index}`;
 
 const ShoppingList = ({ navigation }) => {
   const { store, dispatch } = useContext(StoreContext);

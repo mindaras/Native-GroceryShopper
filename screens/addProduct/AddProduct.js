@@ -27,7 +27,12 @@ const AddProduct = ({ navigation }) => {
   const capitalizedType = type && `${type[0].toUpperCase()}${type.slice(1)}`;
   const saveItem = useCallback(() => {
     // id will be generated on the server side
-    addItemToProducts(dispatch)({ id: new Date(), name, price, type });
+    addItemToProducts(dispatch)({
+      id: Date.now().toString(),
+      name,
+      price,
+      type
+    });
     navigation.pop();
   }, [name, price, type]);
 
@@ -42,6 +47,7 @@ const AddProduct = ({ navigation }) => {
         />
         <TextInput
           placeholder="Price"
+          keyboardType="numeric"
           style={styles.input}
           onChangeText={setPrice}
           value={price}

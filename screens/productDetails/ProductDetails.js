@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { StoreContext } from "../../Store";
 import { colors } from "../../common";
-import { updateItemInProducts } from "../../actions";
+import { updateItemInProducts, updateItemInShoppingList } from "../../actions";
 
 const ProductDetails = ({ navigation }) => {
   const { id, type } = navigation.state.params;
@@ -20,12 +20,10 @@ const ProductDetails = ({ navigation }) => {
   const [localName, setLocalName] = useState(name);
   const [localPrice, setLocalPrice] = useState(price.toString());
   const updateItem = useCallback(() => {
-    updateItemInProducts(dispatch)({
-      id,
-      type,
-      name: localName,
-      price: localPrice
-    });
+    const item = { id, type, name: localName, price: localPrice };
+
+    updateItemInProducts(dispatch)(item);
+    updateItemInShoppingList(dispatch)(item);
     navigation.pop();
   }, [localName, localPrice]);
 
@@ -40,6 +38,7 @@ const ProductDetails = ({ navigation }) => {
         />
         <TextInput
           placeholder="Price"
+          keyboardType="numeric"
           value={localPrice}
           onChangeText={setLocalPrice}
           style={styles.input}

@@ -5,32 +5,45 @@ import {
   REMOVE_ITEM_FROM_SHOPPING_LIST
 } from "../actions";
 
-export const shoppingListInitialState = {};
+export const shoppingListInitialState = [];
 
 const add = (state, action) => {
   const { id, name, price, type } = action.payload;
-  const newState = { ...state };
-  newState.shoppingList[id] = { id, name, price, type };
-  return newState;
+  const shoppingList = [...state.shoppingList, { id, name, price, type }];
+
+  return { ...state, shoppingList };
 };
 
 const update = (state, action) => {
   const { id, name, price, type } = action.payload;
-  const newState = { ...state };
-  newState.shoppingList[id] = { id, name, price, type };
-  return newState;
+  const shoppingList = state.shoppingList.map(item => {
+    if (item.id === id) {
+      return { id, name, price, type };
+    }
+
+    return item;
+  });
+
+  return { ...state, shoppingList };
 };
 
 const bought = (state, action) => {
-  const newState = { ...state };
-  delete newState.shoppingList[action.payload.id];
-  return newState;
+  const shoppingList = state.shoppingList.filter((item, i) => {
+    return i !== action.payload.index;
+  });
+
+  return {
+    ...state,
+    shoppingList
+  };
 };
 
 const remove = (state, action) => {
-  const newState = { ...state };
-  delete newState.shoppingList[action.payload.id];
-  return newState;
+  const shoppingList = state.shoppingList.filter((item, i) => {
+    return i !== action.payload.index;
+  });
+
+  return { ...state, shoppingList };
 };
 
 export const shoppingList = (state, action) => {
