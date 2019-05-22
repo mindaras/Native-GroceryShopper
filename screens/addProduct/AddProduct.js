@@ -13,7 +13,8 @@ import { StoreContext } from "../../Store";
 import { addItemToProducts } from "../../actions";
 
 const AddProduct = ({ navigation }) => {
-  const { dispatch } = useContext(StoreContext);
+  const { store, dispatch } = useContext(StoreContext);
+  const { username, idToken } = store.auth;
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [type, setType] = useState("greens");
@@ -26,13 +27,7 @@ const AddProduct = ({ navigation }) => {
   ]);
   const capitalizedType = type && `${type[0].toUpperCase()}${type.slice(1)}`;
   const saveItem = useCallback(() => {
-    // id will be generated on the server side
-    addItemToProducts(dispatch)({
-      id: Date.now().toString(),
-      name,
-      price,
-      type
-    });
+    addItemToProducts(dispatch)({ username, idToken, name, price, type });
     navigation.pop();
   }, [name, price, type]);
 

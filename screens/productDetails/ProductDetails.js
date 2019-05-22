@@ -14,16 +14,26 @@ import { updateItemInProducts, updateItemInShoppingList } from "../../actions";
 const ProductDetails = ({ navigation }) => {
   const { id, type } = navigation.state.params;
   const { store, dispatch } = useContext(StoreContext);
-  const { products } = store;
+  const {
+    products,
+    auth: { username, idToken }
+  } = store;
   const { name, price } = products[type][id];
   const capitalizedType = `${type[0].toUpperCase()}${type.slice(1)}`;
   const [localName, setLocalName] = useState(name);
   const [localPrice, setLocalPrice] = useState(price.toString());
   const updateItem = useCallback(() => {
-    const item = { id, type, name: localName, price: localPrice };
+    const payload = {
+      username,
+      idToken,
+      id,
+      type,
+      name: localName,
+      price: localPrice
+    };
 
-    updateItemInProducts(dispatch)(item);
-    updateItemInShoppingList(dispatch)(item);
+    updateItemInProducts(dispatch)(payload);
+    updateItemInShoppingList(dispatch)(payload);
     navigation.pop();
   }, [localName, localPrice]);
 

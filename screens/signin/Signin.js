@@ -10,21 +10,15 @@ import { StoreContext } from "../../Store";
 import { signIn } from "../../actions";
 import { colors } from "../../common";
 
-const Signin = ({ navigation }) => {
+const Signin = () => {
   const { store, dispatch } = useContext(StoreContext);
-  const {
-    auth: { authenticated }
-  } = store;
+  const { error } = store.auth;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const signin = useCallback(() => signIn(dispatch)({ username, password }), [
     username,
     password
   ]);
-
-  useEffect(() => {
-    if (authenticated) navigation.navigate("ShoppingList");
-  }, [authenticated]);
 
   return (
     <View style={styles.container}>
@@ -48,6 +42,7 @@ const Signin = ({ navigation }) => {
       >
         <Text style={styles.buttonText}>Signin</Text>
       </TouchableHighlight>
+      <Text>{error}</Text>
     </View>
   );
 };
@@ -75,7 +70,7 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   button: {
-    marginTop: 30,
+    marginVertical: 30,
     height: 50,
     width: "50%",
     justifyContent: "center",

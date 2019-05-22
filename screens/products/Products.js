@@ -1,4 +1,4 @@
-import React, { memo, useContext, useCallback } from "react";
+import React, { memo, useContext, useEffect, useCallback } from "react";
 import { StoreContext } from "../../Store";
 import {
   StyleSheet,
@@ -13,7 +13,11 @@ import { colors } from "../../common";
 import Swipeout from "react-native-swipeout";
 import { Menu } from "../../components";
 import { addIconSource } from "../../assets";
-import { addItemToShoppingList, removeItemFromProducts } from "../../actions";
+import {
+  getProducts,
+  addItemToShoppingList,
+  removeItemFromProducts
+} from "../../actions";
 
 const generateTitleColor = title => {
   switch (title) {
@@ -35,7 +39,8 @@ const generateTitleColor = title => {
 };
 
 const Product = memo(({ id, name, price, type, index, navigate }) => {
-  const { dispatch } = useContext(StoreContext);
+  const { store, dispatch } = useContext(StoreContext);
+  const { username, idToken } = store.auth;
   const leftSwipeOutButtons = [
     {
       text: "Buy",
@@ -58,7 +63,9 @@ const Product = memo(({ id, name, price, type, index, navigate }) => {
       backgroundColor: colors.delete,
       underlayColor: colors.deleteSecondary,
       color: "#fff",
-      onPress: () => removeItemFromProducts(dispatch)({ id, type })
+      onPress: () => {
+        removeItemFromProducts(dispatch)({ username, idToken, id, type });
+      }
     }
   ];
 
@@ -112,6 +119,10 @@ const Products = ({ navigation }) => {
     { title: "Milk", data: Object.values(products.milk || {}) },
     { title: "Drinks", data: Object.values(products.drinks || {}) }
   ].filter(({ data }) => data.length);
+
+  useEffect(() => {
+    getProducts(dispatch);
+  }, []);
 
   return (
     <>

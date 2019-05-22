@@ -1,4 +1,5 @@
 import {
+  ADD_ITEMS_SHOPPING_LIST,
   ADD_ITEM_TO_SHOPPING_LIST,
   UPDATE_ITEM_IN_SHOPPING_LIST,
   BOUGHT_ITEM,
@@ -7,47 +8,51 @@ import {
 
 export const shoppingListInitialState = [];
 
+const addItems = (state, action) => {
+  const shoppingList = action.payload.reduce((acc, curr) => {
+    acc[curr.id] = curr;
+    return acc;
+  }, {});
+
+  return { ...state, shoppingList };
+};
+
 const add = (state, action) => {
-  const { id, name, price, type } = action.payload;
-  const shoppingList = [...state.shoppingList, { id, name, price, type }];
+  const { id, name, price, type, timestamp } = action.payload;
+  const shoppingList = {
+    ...state.shoppingList,
+    [id]: { id, name, price, type, timestamp }
+  };
 
   return { ...state, shoppingList };
 };
 
 const update = (state, action) => {
-  const { id, name, price, type } = action.payload;
-  const shoppingList = state.shoppingList.map(item => {
-    if (item.id === id) {
-      return { id, name, price, type };
-    }
-
-    return item;
-  });
+  const { id, name, price, type, timestamp } = action.payload;
+  const shoppingList = {
+    ...state.shoppingList,
+    [id]: { id, name, price, type, timestamp }
+  };
 
   return { ...state, shoppingList };
 };
 
 const bought = (state, action) => {
-  const shoppingList = state.shoppingList.filter((item, i) => {
-    return i !== action.payload.index;
-  });
-
-  return {
-    ...state,
-    shoppingList
-  };
+  const newState = { ...state };
+  delete newState.shoppingList[action.payload.id];
+  return newState;
 };
 
 const remove = (state, action) => {
-  const shoppingList = state.shoppingList.filter((item, i) => {
-    return i !== action.payload.index;
-  });
-
-  return { ...state, shoppingList };
+  const newState = { ...state };
+  delete newState.shoppingList[action.payload.id];
+  return newState;
 };
 
 export const shoppingList = (state, action) => {
   switch (action.type) {
+    case ADD_ITEMS_SHOPPING_LIST:
+      return addItems(state, action);
     case ADD_ITEM_TO_SHOPPING_LIST:
       return add(state, action);
     case UPDATE_ITEM_IN_SHOPPING_LIST:

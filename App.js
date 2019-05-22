@@ -9,6 +9,8 @@ import {
 } from "./screens";
 import SplashScreen from "react-native-splash-screen";
 import Store, { StoreContext } from "./Store";
+import AsyncStorage from "@react-native-community/async-storage";
+import { refreshSession } from "./actions";
 
 const MainNavigator = createStackNavigator({
   ShoppingList: { screen: ShoppingList },
@@ -20,12 +22,27 @@ const MainNavigator = createStackNavigator({
 const Navigator = createAppContainer(MainNavigator);
 
 const Entry = () => {
-  const { store } = useContext(StoreContext);
-  const {
-    auth: { authenticated }
-  } = store;
+  const { store, dispatch } = useContext(StoreContext);
 
-  if (authenticated) {
+  useEffect(() => {
+    const tryToRefreshSession = async () => {
+      try {
+        const username = await AsyncStorage.getItem("GroceryShopper_username");
+
+        if (username) {
+          const refreshToken = await AsyncStorage.getItem(
+            "GroceryShopper_refreshToken"
+          );
+
+          refreshSession(dispatch)({ username, token: refreshToken });
+        }
+      } catch (e) {}
+    };
+
+    tryToRefreshSession();
+  }, []);
+
+  if (store.auth.authenticated) {
     return <Navigator />;
   }
 

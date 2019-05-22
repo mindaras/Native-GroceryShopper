@@ -1,10 +1,11 @@
-import React, { useContext, useCallback, memo } from "react";
+import React, { useContext, useEffect, useCallback, memo } from "react";
 import { StyleSheet, SafeAreaView, FlatList, View, Text } from "react-native";
 import Swipeout from "react-native-swipeout";
 import { colors } from "../../common";
 import { StoreContext } from "../../Store";
 import { boughtItem, removeItemFromShoppingList } from "../../actions";
 import { Menu } from "../../components";
+import { getShoppingListItems } from "../../actions";
 
 const generateBorderColor = type => {
   switch (type) {
@@ -25,15 +26,15 @@ const generateBorderColor = type => {
   }
 };
 
-const Product = memo(({ id, name, price, type, index }) => {
+const Product = memo(({ id, name, price, type, timestamp, index }) => {
   const { dispatch } = useContext(StoreContext);
-  const boughItem = useCallback(() => boughtItem(dispatch)({ id, index }), [
+  const boughItem = useCallback(() => boughtItem(dispatch)({ id, timestamp }), [
     id,
-    index
+    timestamp
   ]);
   const deleteItem = useCallback(
-    () => removeItemFromShoppingList(dispatch)({ id, index }),
-    [id, index]
+    () => removeItemFromShoppingList(dispatch)({ id, timestamp }),
+    [id, timestamp]
   );
   const leftSwipeOutButtons = [
     {
@@ -80,6 +81,10 @@ const keyExtractor = ({ id }, index) => `${id}${index}`;
 const ShoppingList = ({ navigation }) => {
   const { store, dispatch } = useContext(StoreContext);
   const shoppingList = Object.values(store.shoppingList);
+
+  useEffect(() => {
+    getShoppingListItems(dispatch);
+  }, []);
 
   return (
     <>
