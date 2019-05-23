@@ -29,7 +29,7 @@ const generateBorderColor = type => {
 const Product = memo(({ id, name, price, type, index }) => {
   const { store, dispatch } = useContext(StoreContext);
   const { username, idToken } = store.auth;
-  const boughtItem = useCallback(() => {
+  const buyItem = useCallback(() => {
     boughtItem(dispatch)({
       username,
       idToken,
@@ -54,7 +54,7 @@ const Product = memo(({ id, name, price, type, index }) => {
       backgroundColor: colors.bought,
       underlayColor: colors.boughtSecondary,
       color: "#fff",
-      onPress: boughtItem
+      onPress: buyItem
     }
   ];
   const rightSwipeoutButtons = [
