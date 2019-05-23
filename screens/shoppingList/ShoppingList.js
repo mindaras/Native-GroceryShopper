@@ -26,16 +26,28 @@ const generateBorderColor = type => {
   }
 };
 
-const Product = memo(({ id, name, price, type, timestamp, index }) => {
-  const { dispatch } = useContext(StoreContext);
-  const boughItem = useCallback(() => boughtItem(dispatch)({ id, timestamp }), [
-    id,
-    timestamp
-  ]);
-  const deleteItem = useCallback(
-    () => removeItemFromShoppingList(dispatch)({ id, timestamp }),
-    [id, timestamp]
-  );
+const Product = memo(({ id, name, price, type, index }) => {
+  const { store, dispatch } = useContext(StoreContext);
+  const { username, idToken } = store.auth;
+  const boughItem = useCallback(() => {
+    boughtItem(dispatch)({
+      username,
+      idToken,
+      id,
+      name,
+      price,
+      type
+    }),
+      [id, name, price, type];
+  });
+  const deleteItem = useCallback(() => {
+    removeItemFromShoppingList(dispatch)({
+      username,
+      idToken,
+      id
+    }),
+      [id];
+  });
   const leftSwipeOutButtons = [
     {
       text: "Bought",
@@ -56,7 +68,11 @@ const Product = memo(({ id, name, price, type, timestamp, index }) => {
   ];
 
   return (
-    <Swipeout left={leftSwipeOutButtons} right={rightSwipeoutButtons}>
+    <Swipeout
+      left={leftSwipeOutButtons}
+      right={rightSwipeoutButtons}
+      autoClose={true}
+    >
       <View
         style={[
           styles.item,

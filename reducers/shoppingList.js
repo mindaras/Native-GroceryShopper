@@ -18,29 +18,24 @@ const addItems = (state, action) => {
 };
 
 const add = (state, action) => {
-  const { id, name, price, type, timestamp } = action.payload;
+  const { id, productId, name, price, type } = action.payload;
   const shoppingList = {
     ...state.shoppingList,
-    [id]: { id, name, price, type, timestamp }
+    [id]: { id, productId, name, price, type }
   };
 
   return { ...state, shoppingList };
 };
 
 const update = (state, action) => {
-  const { id, name, price, type, timestamp } = action.payload;
-  const shoppingList = {
-    ...state.shoppingList,
-    [id]: { id, name, price, type, timestamp }
-  };
+  const { name, price, type, keys } = action.payload;
+  const shoppingList = { ...state.shoppingList };
+
+  keys.forEach(({ id }) => {
+    shoppingList[id] = { ...shoppingList[id], name, price, type };
+  });
 
   return { ...state, shoppingList };
-};
-
-const bought = (state, action) => {
-  const newState = { ...state };
-  delete newState.shoppingList[action.payload.id];
-  return newState;
 };
 
 const remove = (state, action) => {
@@ -58,7 +53,6 @@ export const shoppingList = (state, action) => {
     case UPDATE_ITEM_IN_SHOPPING_LIST:
       return update(state, action);
     case BOUGHT_ITEM:
-      return bought(state, action);
     case REMOVE_ITEM_FROM_SHOPPING_LIST:
       return remove(state, action);
     default:

@@ -23,7 +23,7 @@ const ProductDetails = ({ navigation }) => {
   const [localName, setLocalName] = useState(name);
   const [localPrice, setLocalPrice] = useState(price.toString());
   const updateItem = useCallback(() => {
-    const payload = {
+    const productsPayload = {
       username,
       idToken,
       id,
@@ -31,9 +31,25 @@ const ProductDetails = ({ navigation }) => {
       name: localName,
       price: localPrice
     };
+    const shoppingListItemKeys = Object.values(store.shoppingList).reduce(
+      (acc, curr) => {
+        if (curr.productId === id) {
+          acc = [...acc, { id: curr.id }];
+        }
 
-    updateItemInProducts(dispatch)(payload);
-    updateItemInShoppingList(dispatch)(payload);
+        return acc;
+      },
+      []
+    );
+
+    const shoppingListPayload = {
+      ...productsPayload,
+      productId: id,
+      keys: shoppingListItemKeys
+    };
+
+    updateItemInProducts(dispatch)(productsPayload);
+    updateItemInShoppingList(dispatch)(shoppingListPayload);
     navigation.pop();
   }, [localName, localPrice]);
 

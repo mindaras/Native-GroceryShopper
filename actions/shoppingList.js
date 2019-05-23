@@ -15,25 +15,48 @@ export const getShoppingListItems = async dispatch => {
 
 export const addItemToShoppingList = dispatch => async payload => {
   try {
-    // console.log("input", payload);
-    // const payload = await request(
-    //   endpoints.shoppingList.create,
-    //   "POST",
-    //   payload
-    // );
-    // console.log("payload", payload);
-    dispatch({ type: ADD_ITEM_TO_SHOPPING_LIST, payload });
+    const output = await request(
+      endpoints.shoppingList.create,
+      "POST",
+      payload
+    );
+
+    if (!output.message) {
+      dispatch({
+        type: ADD_ITEM_TO_SHOPPING_LIST,
+        payload: { ...payload, id: output.id }
+      });
+    }
   } catch (e) {}
 };
 
-export const updateItemInShoppingList = dispatch => payload => {
-  dispatch({ type: UPDATE_ITEM_IN_SHOPPING_LIST, payload });
+export const updateItemInShoppingList = dispatch => async payload => {
+  try {
+    const output = await request(endpoints.shoppingList.update, "PUT", payload);
+
+    if (!output.message) {
+      dispatch({ type: UPDATE_ITEM_IN_SHOPPING_LIST, payload });
+    }
+  } catch (e) {}
 };
 
-export const boughtItem = dispatch => payload => {
-  dispatch({ type: BOUGHT_ITEM, payload });
+export const boughtItem = dispatch => async payload => {
+  try {
+    const output = await request(endpoints.bought.create, "POST", payload);
+    if (!output.message) dispatch({ type: BOUGHT_ITEM, payload });
+  } catch (e) {}
 };
 
-export const removeItemFromShoppingList = dispatch => payload => {
-  dispatch({ type: BOUGHT_ITEM, payload });
+export const removeItemFromShoppingList = dispatch => async payload => {
+  try {
+    const output = await request(
+      endpoints.shoppingList.delete,
+      "DELETE",
+      payload
+    );
+
+    if (!output.message) {
+      dispatch({ type: REMOVE_ITEM_FROM_SHOPPING_LIST, payload });
+    }
+  } catch (e) {}
 };

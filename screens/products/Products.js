@@ -41,13 +41,31 @@ const generateTitleColor = title => {
 const Product = memo(({ id, name, price, type, index, navigate }) => {
   const { store, dispatch } = useContext(StoreContext);
   const { username, idToken } = store.auth;
+  const addToShoppingList = useCallback(
+    () =>
+      addItemToShoppingList(dispatch)({
+        username,
+        idToken,
+        productId: id,
+        name,
+        price,
+        type
+      }),
+    [id, name, price, type]
+  );
+  const navigateToProductDetails = useCallback(() => {
+    navigate("ProductDetails", { id, type });
+  }, [id, type]);
+  const removeFromProducts = useCallback(() => {
+    removeItemFromProducts(dispatch)({ username, idToken, id, type });
+  }, [id, type]);
   const leftSwipeOutButtons = [
     {
       text: "Buy",
       backgroundColor: colors.secondary,
       underlayColor: colors.secondaryVariant,
       color: "#000",
-      onPress: () => addItemToShoppingList(dispatch)({ id, name, price, type })
+      onPress: addToShoppingList
     }
   ];
   const rightSwipeoutButtons = [
@@ -56,16 +74,14 @@ const Product = memo(({ id, name, price, type, index, navigate }) => {
       backgroundColor: colors.edit,
       underlayColor: colors.editSecondary,
       color: "#000",
-      onPress: () => navigate("ProductDetails", { id, type })
+      onPress: navigateToProductDetails
     },
     {
       text: "Delete",
       backgroundColor: colors.delete,
       underlayColor: colors.deleteSecondary,
       color: "#fff",
-      onPress: () => {
-        removeItemFromProducts(dispatch)({ username, idToken, id, type });
-      }
+      onPress: removeFromProducts
     }
   ];
 

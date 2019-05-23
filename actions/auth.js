@@ -5,22 +5,19 @@ export const SIGNIN = "auth_signin";
 export const REFRESH_SESSION = "auth_refreshSession";
 export const SIGNOUT = "auth_signout";
 
-export const signIn = dispatch => async ({ username, password }) => {
+export const signIn = dispatch => async payload => {
   try {
-    const payload = await request(endpoints.auth.signin, "POST", {
-      username,
-      password
-    });
+    const output = await request(endpoints.auth.signin, "POST", payload);
 
-    if (payload.message) {
-      dispatch({ type: SIGNIN, payload: { message: payload.message } });
+    if (output.message) {
+      dispatch({ type: SIGNIN, payload: { message: output.message } });
       return;
     }
 
-    dispatch({ type: SIGNIN, payload });
+    dispatch({ type: SIGNIN, payload: output });
 
     try {
-      const { username, idToken, refreshToken } = payload;
+      const { username, idToken, refreshToken } = output;
 
       if (idToken && refreshToken) {
         await AsyncStorage.setItem("GroceryShopper_username", username);
