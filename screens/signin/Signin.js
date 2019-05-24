@@ -40,7 +40,7 @@ const Signin = () => {
         underlayColor={colors.primaryVariant}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Signin</Text>
+        <Text style={styles.buttonText}>Sign in</Text>
       </TouchableHighlight>
       <Text>{error}</Text>
     </View>
