@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useRef, useState, useCallback } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -15,16 +15,26 @@ import { addItemToProducts } from "../../actions";
 const AddProduct = ({ navigation }) => {
   const { store, dispatch } = useContext(StoreContext);
   const { username, idToken } = store.auth;
+  const nameRef = useRef();
+  const priceRef = useRef();
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [type, setType] = useState("greens");
-  const [typeFocused, setTypeFocused] = useState(false);
-  const togglePicker = useCallback(() => setTypeFocused(!typeFocused), [
-    typeFocused
-  ]);
+  const [pickerActive, setPickerActive] = useState(false);
+  const togglePicker = useCallback(() => {
+    if (!pickerActive) {
+      nameRef.current.blur();
+      priceRef.current.blur();
+    }
+
+    setPickerActive(!pickerActive);
+  }, [pickerActive]);
   const pickerChangeHandler = useCallback(value => setType(value), [
-    typeFocused
+    pickerActive
   ]);
+  const inactivatePicker = useCallback(() => {
+    if (pickerActive) togglePicker();
+  }, [pickerActive]);
   const capitalizedType = type && `${type[0].toUpperCase()}${type.slice(1)}`;
   const saveItem = useCallback(() => {
     addItemToProducts(dispatch)({ username, idToken, name, price, type });
@@ -39,30 +49,42 @@ const AddProduct = ({ navigation }) => {
           style={styles.input}
           onChangeText={setName}
           value={name}
+          onFocus={inactivatePicker}
+          ref={nameRef}
         />
         <TextInput
           placeholder="Price"
-          keyboardType="numeric"
           style={styles.input}
           onChangeText={setPrice}
           value={price}
+          onFocus={inactivatePicker}
+          ref={priceRef}
         />
-        <TextInput
-          placeholder="Type"
-          style={styles.input}
-          onFocus={togglePicker}
-          onBlur={togglePicker}
-          value={capitalizedType}
-        />
+        <View style={styles.typeContainer}>
+          <TextInput
+            placeholder="Type"
+            style={[styles.input]}
+            onBlur={togglePicker}
+            value={capitalizedType}
+            editable={false}
+          />
+          <TouchableHighlight
+            onPress={togglePicker}
+            underlayColor={colors.primaryVariant}
+            style={styles.toggleButton}
+          >
+            <Text style={styles.buttonText}>Change</Text>
+          </TouchableHighlight>
+        </View>
       </View>
       <TouchableHighlight
         onPress={saveItem}
         underlayColor={colors.primaryVariant}
-        style={styles.button}
+        style={styles.saveButton}
       >
-        <Text style={styles.buttonText}>Save</Text>
+        <Text style={[styles.buttonText]}>Save</Text>
       </TouchableHighlight>
-      {typeFocused ? (
+      {pickerActive ? (
         <Picker selectedValue={type} onValueChange={pickerChangeHandler}>
           <Picker.Item label="Greens" value="greens" />
           <Picker.Item label="Meat" value="meat" />
@@ -98,7 +120,26 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginBottom: 30
   },
-  button: {
+  typeContainer: {
+    position: "relative",
+    paddingTop: 10
+  },
+  toggleButton: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    backgroundColor: colors.primary,
+    shadowColor: "#000",
+    shadowOffset: { height: 15 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12
+  },
+  saveButton: {
     alignSelf: "center",
     marginTop: 30,
     height: 50,
