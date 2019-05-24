@@ -1,6 +1,7 @@
 import { request, endpoints } from "../common";
+import { endShoppingListRefresh } from "./refresh";
 
-export const ADD_ITEMS_SHOPPING_LIST = "shoppingList_addItems";
+export const GET_SHOPPING_LIST_ITEMS = "shoppingList_addItems";
 export const ADD_ITEM_TO_SHOPPING_LIST = "shoppingList_addItem";
 export const UPDATE_ITEM_IN_SHOPPING_LIST = "shoppingList_updateItem";
 export const BOUGHT_ITEM = "shoppingList_boughtItem";
@@ -9,7 +10,10 @@ export const REMOVE_ITEM_FROM_SHOPPING_LIST = "shoppingList_removeItem";
 export const getShoppingListItems = async dispatch => {
   try {
     const payload = await request(endpoints.shoppingList.getAll, "GET");
-    if (!payload.message) dispatch({ type: ADD_ITEMS_SHOPPING_LIST, payload });
+    if (!payload.message) {
+      dispatch({ type: GET_SHOPPING_LIST_ITEMS, payload });
+      endShoppingListRefresh(dispatch);
+    }
   } catch (e) {}
 };
 

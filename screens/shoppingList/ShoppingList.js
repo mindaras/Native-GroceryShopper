@@ -1,9 +1,21 @@
 import React, { useContext, useEffect, useCallback, memo } from "react";
-import { StyleSheet, SafeAreaView, FlatList, View, Text } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl,
+  FlatList,
+  View,
+  Text
+} from "react-native";
 import Swipeout from "react-native-swipeout";
 import { colors } from "../../common";
 import { StoreContext } from "../../Store";
-import { boughtItem, removeItemFromShoppingList } from "../../actions";
+import {
+  refreshShoppingList,
+  boughtItem,
+  removeItemFromShoppingList
+} from "../../actions";
 import { Menu } from "../../components";
 import { getShoppingListItems } from "../../actions";
 
@@ -99,6 +111,10 @@ const keyExtractor = ({ id }, index) => `${id}${index}`;
 const ShoppingList = ({ navigation }) => {
   const { store, dispatch } = useContext(StoreContext);
   const shoppingList = Object.values(store.shoppingList);
+  const { shoppingList: refreshing } = store.refresh;
+  const refreshHandler = useCallback(() => {
+    refreshShoppingList(dispatch);
+  }, []);
 
   useEffect(() => {
     getShoppingListItems(dispatch);
@@ -107,11 +123,20 @@ const ShoppingList = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <FlatList
-          data={shoppingList}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-        />
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={refreshHandler}
+            />
+          }
+        >
+          <FlatList
+            data={shoppingList}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+          />
+        </ScrollView>
       </SafeAreaView>
       <Menu navigation={navigation} dispatch={dispatch} />
     </>

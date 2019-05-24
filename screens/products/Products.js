@@ -3,6 +3,8 @@ import { StoreContext } from "../../Store";
 import {
   StyleSheet,
   SafeAreaView,
+  ScrollView,
+  RefreshControl,
   View,
   Text,
   SectionList,
@@ -15,6 +17,7 @@ import { Menu } from "../../components";
 import { addIconSource } from "../../assets";
 import {
   getProducts,
+  refreshProducts,
   addItemToShoppingList,
   removeItemFromProducts
 } from "../../actions";
@@ -127,6 +130,10 @@ const keyExtractor = ({ id }) => id;
 
 const Products = ({ navigation }) => {
   const { store, dispatch } = useContext(StoreContext);
+  const { products: refreshing } = store.refresh;
+  const refreshHandler = useCallback(() => {
+    refreshProducts(dispatch);
+  }, []);
   const addHandler = useCallback(() => navigation.navigate("AddProduct"), []);
   const { products } = store;
   const sections = [
@@ -146,12 +153,21 @@ const Products = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <SectionList
-          renderItem={renderItem(navigation.navigate)}
-          renderSectionHeader={renderSectionHeader}
-          sections={sections}
-          keyExtractor={keyExtractor}
-        />
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={refreshHandler}
+            />
+          }
+        >
+          <SectionList
+            renderItem={renderItem(navigation.navigate)}
+            renderSectionHeader={renderSectionHeader}
+            sections={sections}
+            keyExtractor={keyExtractor}
+          />
+        </ScrollView>
       </SafeAreaView>
       <TouchableOpacity onPress={addHandler} style={styles.addContainer}>
         <Image source={addIconSource} resizeMode="contain" style={styles.add} />

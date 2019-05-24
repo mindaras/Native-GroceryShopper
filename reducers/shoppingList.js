@@ -1,5 +1,5 @@
 import {
-  ADD_ITEMS_SHOPPING_LIST,
+  GET_SHOPPING_LIST_ITEMS,
   ADD_ITEM_TO_SHOPPING_LIST,
   UPDATE_ITEM_IN_SHOPPING_LIST,
   BOUGHT_ITEM,
@@ -46,7 +46,7 @@ const remove = (state, action) => {
 
 export const shoppingList = (state, action) => {
   switch (action.type) {
-    case ADD_ITEMS_SHOPPING_LIST:
+    case GET_SHOPPING_LIST_ITEMS:
       return addItems(state, action);
     case ADD_ITEM_TO_SHOPPING_LIST:
       return add(state, action);

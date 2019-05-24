@@ -66,7 +66,6 @@ const ProductDetails = ({ navigation }) => {
         />
         <TextInput
           placeholder="Price"
-          keyboardType="numeric"
           value={localPrice}
           onChangeText={setLocalPrice}
           style={styles.input}

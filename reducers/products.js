@@ -1,5 +1,5 @@
 import {
-  ADD_ITEMS_TO_PRODUCTS,
+  GET_PRODUCTS,
   ADD_ITEM_TO_PRODUCTS,
   UPDATE_ITEM_IN_PRODUCTS,
   REMOVE_ITEM_FROM_PRODUCTS
@@ -42,13 +42,12 @@ const remove = (state, action) => {
   const { id, type } = action.payload;
   const newState = { ...state };
   delete newState.products[type][id];
-  console.log("products", newState.products);
   return newState;
 };
 
 export const products = (state, action) => {
   switch (action.type) {
-    case ADD_ITEMS_TO_PRODUCTS:
+    case GET_PRODUCTS:
       return addProducts(state, action);
     case ADD_ITEM_TO_PRODUCTS:
       return add(state, action);

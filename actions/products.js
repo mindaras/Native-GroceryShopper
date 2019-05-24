@@ -1,6 +1,7 @@
 import { request, endpoints } from "../common";
+import { endProductsRefresh } from "./refresh";
 
-export const ADD_ITEMS_TO_PRODUCTS = "products_addItems";
+export const GET_PRODUCTS = "products_getItems";
 export const ADD_ITEM_TO_PRODUCTS = "products_addItem";
 export const UPDATE_ITEM_IN_PRODUCTS = "products_updateItem";
 export const REMOVE_ITEM_FROM_PRODUCTS = "products_removeItem";
@@ -8,7 +9,10 @@ export const REMOVE_ITEM_FROM_PRODUCTS = "products_removeItem";
 export const getProducts = async dispatch => {
   try {
     const payload = await request(endpoints.products.getAll, "GET");
-    if (!payload.message) dispatch({ type: ADD_ITEMS_TO_PRODUCTS, payload });
+    if (!payload.message) {
+      dispatch({ type: GET_PRODUCTS, payload });
+      endProductsRefresh(dispatch);
+    }
   } catch (e) {}
 };
 
