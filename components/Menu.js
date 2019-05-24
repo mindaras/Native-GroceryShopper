@@ -9,12 +9,13 @@ import { signOut } from "../actions";
 
 const Menu = ({ navigation, dispatch }) => {
   const { popToTop, navigate } = navigation;
+  const navigateToHome = useCallback(() => popToTop(), []);
   const navigateToProducts = useCallback(() => navigate("Products"), []);
   const signOutUser = useCallback(() => signOut(dispatch)(), []);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={popToTop}>
+      <TouchableOpacity onPress={navigateToHome}>
         <Image
           style={{
             width: 25,

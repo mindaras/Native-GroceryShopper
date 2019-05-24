@@ -21,6 +21,8 @@ const generateBorderColor = type => {
       return colors.fruits;
     case "drinks":
       return colors.drinks;
+    case "other":
+      return colors.other;
     default:
       return "#fff";
   }

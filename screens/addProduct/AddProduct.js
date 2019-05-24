@@ -37,8 +37,10 @@ const AddProduct = ({ navigation }) => {
   }, [pickerActive]);
   const capitalizedType = type && `${type[0].toUpperCase()}${type.slice(1)}`;
   const saveItem = useCallback(() => {
-    addItemToProducts(dispatch)({ username, idToken, name, price, type });
-    navigation.pop();
+    if (name && price) {
+      addItemToProducts(dispatch)({ username, idToken, name, price, type });
+      navigation.pop();
+    }
   }, [name, price, type]);
 
   return (
@@ -92,6 +94,7 @@ const AddProduct = ({ navigation }) => {
           <Picker.Item label="Fruits" value="fruits" />
           <Picker.Item label="Milk" value="milk" />
           <Picker.Item label="Drinks" value="drinks" />
+          <Picker.Item label="Other" value="other" />
         </Picker>
       ) : null}
     </SafeAreaView>

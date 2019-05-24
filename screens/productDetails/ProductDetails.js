@@ -23,6 +23,8 @@ const ProductDetails = ({ navigation }) => {
   const [localName, setLocalName] = useState(name);
   const [localPrice, setLocalPrice] = useState(price.toString());
   const updateItem = useCallback(() => {
+    if (!localName || !localPrice) return;
+
     const productsPayload = {
       username,
       idToken,

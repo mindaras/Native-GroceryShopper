@@ -15,5 +15,6 @@ export default {
   meat: "#ff8e8e",
   fruits: "#ffdaa8",
   milk: "#f2f2f2",
-  drinks: "#c4edff"
+  drinks: "#c4edff",
+  other: "#84e8de"
 };
