@@ -36,6 +36,8 @@ const generateTitleColor = title => {
       return colors.milk;
     case "Drinks":
       return colors.drinks;
+    case "Grain":
+      return colors.grain;
     case "Other":
       return colors.other;
     default:
@@ -143,11 +145,12 @@ const Products = ({ navigation }) => {
     { title: "Fruits", data: Object.values(products.fruits || {}) },
     { title: "Milk", data: Object.values(products.milk || {}) },
     { title: "Drinks", data: Object.values(products.drinks || {}) },
+    { title: "Grain", data: Object.values(products.grain || {}) },
     { title: "Other", data: Object.values(products.other || {}) }
   ].filter(({ data }) => data.length);
 
   useEffect(() => {
-    getProducts(dispatch);
+    getProducts(dispatch)({ refreshing });
   }, []);
 
   return (

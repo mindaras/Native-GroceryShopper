@@ -6,12 +6,13 @@ export const ADD_ITEM_TO_PRODUCTS = "products_addItem";
 export const UPDATE_ITEM_IN_PRODUCTS = "products_updateItem";
 export const REMOVE_ITEM_FROM_PRODUCTS = "products_removeItem";
 
-export const getProducts = async dispatch => {
+export const getProducts = dispatch => async ({ refreshing }) => {
   try {
     const payload = await request(endpoints.products.getAll, "GET");
+
     if (!payload.message) {
       dispatch({ type: GET_PRODUCTS, payload });
-      endProductsRefresh(dispatch);
+      if (refreshing) endProductsRefresh(dispatch);
     }
   } catch (e) {}
 };

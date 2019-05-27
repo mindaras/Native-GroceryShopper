@@ -5,7 +5,8 @@ import {
   ShoppingList,
   Products,
   ProductDetails,
-  AddProduct
+  AddProduct,
+  Statistics
 } from "./screens";
 import SplashScreen from "react-native-splash-screen";
 import Store, { StoreContext } from "./Store";
@@ -16,7 +17,8 @@ const MainNavigator = createStackNavigator({
   ShoppingList: { screen: ShoppingList },
   Products: { screen: Products },
   ProductDetails: { screen: ProductDetails },
-  AddProduct: { screen: AddProduct }
+  AddProduct: { screen: AddProduct },
+  Statistics: { screen: Statistics }
 });
 
 const Navigator = createAppContainer(MainNavigator);

@@ -94,6 +94,7 @@ const AddProduct = ({ navigation }) => {
           <Picker.Item label="Fruits" value="fruits" />
           <Picker.Item label="Milk" value="milk" />
           <Picker.Item label="Drinks" value="drinks" />
+          <Picker.Item label="Grain" value="grain" />
           <Picker.Item label="Other" value="other" />
         </Picker>
       ) : null}

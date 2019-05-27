@@ -8,7 +8,7 @@ export const END_PRODUCTS_REFRESH = "refresh_endProductsRefresh";
 
 export const refreshShoppingList = dispatch => {
   dispatch({ type: START_SHOPPING_LIST_REFRESH });
-  getShoppingListItems(dispatch);
+  getShoppingListItems(dispatch)({ refreshing: true });
 };
 
 export const endShoppingListRefresh = dispatch => {
@@ -17,7 +17,7 @@ export const endShoppingListRefresh = dispatch => {
 
 export const refreshProducts = dispatch => {
   dispatch({ type: START_PRODUCTS_REFRESH });
-  getProducts(dispatch);
+  getProducts(dispatch)({ refreshing: true });
 };
 
 export const endProductsRefresh = dispatch => {

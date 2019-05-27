@@ -33,6 +33,8 @@ const generateBorderColor = type => {
       return colors.fruits;
     case "drinks":
       return colors.drinks;
+    case "grain":
+      return colors.grain;
     case "other":
       return colors.other;
     default:
@@ -117,7 +119,7 @@ const ShoppingList = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    getShoppingListItems(dispatch);
+    getShoppingListItems(dispatch)({ refreshing });
   }, []);
 
   return (

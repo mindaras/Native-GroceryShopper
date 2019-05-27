@@ -34,9 +34,9 @@ export const refreshSession = dispatch => async ({ username, token }) => {
       token
     });
 
-    if (!payload.message) {
-      const { idToken, refreshToken } = payload;
+    const { message, idToken, refreshToken } = payload;
 
+    if (!message && idToken && refreshToken) {
       dispatch({ type: SIGNIN, payload: { username, idToken, refreshToken } });
 
       await AsyncStorage.setItem("GroceryShopper_idToken", idToken);

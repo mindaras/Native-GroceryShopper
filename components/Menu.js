@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import {
   homeIconSource,
   productsIconSource,
+  statisticsIconSource,
   logoutIconSource
 } from "../assets";
 import { signOut } from "../actions";
@@ -11,6 +12,7 @@ const Menu = ({ navigation, dispatch }) => {
   const { popToTop, navigate } = navigation;
   const navigateToHome = useCallback(() => popToTop(), []);
   const navigateToProducts = useCallback(() => navigate("Products"), []);
+  const navigateToStatistics = useCallback(() => navigate("Statistics"), []);
   const signOutUser = useCallback(() => signOut(dispatch)(), []);
 
   return (
@@ -33,6 +35,16 @@ const Menu = ({ navigation, dispatch }) => {
           }}
           resizeMode="contain"
           source={productsIconSource}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={navigateToStatistics}>
+        <Image
+          style={{
+            width: 25,
+            height: 25
+          }}
+          resizeMode="contain"
+          source={statisticsIconSource}
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={signOutUser}>
