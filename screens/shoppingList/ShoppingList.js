@@ -19,29 +19,6 @@ import {
 import { Menu } from "../../components";
 import { getShoppingListItems } from "../../actions";
 
-const generateBorderColor = type => {
-  switch (type) {
-    case "greens":
-      return colors.greens;
-    case "sweets":
-      return colors.sweets;
-    case "meat":
-      return colors.meat;
-    case "milk":
-      return colors.milk;
-    case "fruits":
-      return colors.fruits;
-    case "drinks":
-      return colors.drinks;
-    case "grain":
-      return colors.grain;
-    case "other":
-      return colors.other;
-    default:
-      return "#fff";
-  }
-};
-
 const Product = memo(({ id, name, price, type, index }) => {
   const { store, dispatch } = useContext(StoreContext);
   const { username, idToken } = store.auth;
@@ -95,7 +72,7 @@ const Product = memo(({ id, name, price, type, index }) => {
           {
             borderTopWidth: index === 0 ? 1 : 0,
             borderLeftWidth: 5,
-            borderLeftColor: generateBorderColor(type)
+            borderLeftColor: colors[type]
           }
         ]}
       >

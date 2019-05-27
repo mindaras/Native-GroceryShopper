@@ -17,5 +17,6 @@ export default {
   milk: "#f2f2f2",
   drinks: "#c4edff",
   grain: "#e0bc8b",
+  spices: "#ff8a3d",
   other: "#84e8de"
 };

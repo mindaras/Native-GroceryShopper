@@ -22,29 +22,6 @@ import {
   removeItemFromProducts
 } from "../../actions";
 
-const generateTitleColor = title => {
-  switch (title) {
-    case "Greens":
-      return colors.greens;
-    case "Meat":
-      return colors.meat;
-    case "Sweets":
-      return colors.sweets;
-    case "Fruits":
-      return colors.fruits;
-    case "Milk":
-      return colors.milk;
-    case "Drinks":
-      return colors.drinks;
-    case "Grain":
-      return colors.grain;
-    case "Other":
-      return colors.other;
-    default:
-      return "#fff";
-  }
-};
-
 const Product = memo(({ id, name, price, type, index, navigate }) => {
   const { store, dispatch } = useContext(StoreContext);
   const { username, idToken } = store.auth;
@@ -121,7 +98,7 @@ renderSectionHeader = ({ section: { title } }) => (
   <View
     style={[
       styles.sectionHeaderContainer,
-      { backgroundColor: generateTitleColor(title) }
+      { backgroundColor: colors[title.toLowerCase()] }
     ]}
   >
     <Text style={styles.sectionHeader}>{title}</Text>
@@ -146,6 +123,7 @@ const Products = ({ navigation }) => {
     { title: "Milk", data: Object.values(products.milk || {}) },
     { title: "Drinks", data: Object.values(products.drinks || {}) },
     { title: "Grain", data: Object.values(products.grain || {}) },
+    { title: "Spices", data: Object.values(products.spices || {}) },
     { title: "Other", data: Object.values(products.other || {}) }
   ].filter(({ data }) => data.length);
 
