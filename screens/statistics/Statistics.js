@@ -55,7 +55,6 @@ const keyExtractor = ({ key }) => key;
 
 const Statistics = () => {
   const { store, dispatch } = useContext(StoreContext);
-
   const { bought } = store;
 
   useEffect(() => {
@@ -71,7 +70,7 @@ const Statistics = () => {
     const price = parseFloat(curr.price);
 
     if (acc[type]) {
-      acc[type].amount += price;
+      acc[type].amount = (parseFloat(acc[type].amount) + price).toFixed(2);
       total += price;
     } else {
       acc[type] = {
