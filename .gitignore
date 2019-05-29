@@ -56,3 +56,4 @@ buck-out/
 *.jsbundle
 
 common/endpoints.js
+*.psd
