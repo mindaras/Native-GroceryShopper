@@ -168,13 +168,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  title: {
-    textAlign: "center",
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colors.primary,
-    marginVertical: 30
-  },
   sectionHeaderContainer: {
     paddingVertical: 5,
     paddingHorizontal: 20,

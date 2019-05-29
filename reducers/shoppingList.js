@@ -52,7 +52,6 @@ export const shoppingList = (state, action) => {
       return add(state, action);
     case UPDATE_ITEM_IN_SHOPPING_LIST:
       return update(state, action);
-    case BOUGHT_ITEM:
     case REMOVE_ITEM_FROM_SHOPPING_LIST:
       return remove(state, action);
     default:

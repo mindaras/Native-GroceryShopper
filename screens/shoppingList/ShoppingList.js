@@ -132,14 +132,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  title: {
-    textAlign: "center",
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colors.primary,
-    marginTop: 30,
-    marginBottom: 60
-  },
   list: {
     flex: 1
   },

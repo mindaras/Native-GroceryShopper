@@ -7,14 +7,17 @@ import {
   auth,
   authInitialState,
   refresh,
-  refreshInitialState
+  refreshInitialState,
+  bought,
+  boughtInitialState
 } from "./reducers";
 
 const initialState = {
   products: productsInitialState,
   shoppingList: shoppingListInitialState,
   auth: authInitialState,
-  refresh: refreshInitialState
+  refresh: refreshInitialState,
+  bought: boughtInitialState
 };
 
 const reducer = (state, action) => {
@@ -29,6 +32,8 @@ const reducer = (state, action) => {
       return auth(state, action);
     case "refresh":
       return refresh(state, action);
+    case "bought":
+      return bought(state, action);
     default:
       return state;
   }
