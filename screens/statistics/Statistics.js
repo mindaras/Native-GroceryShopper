@@ -5,6 +5,7 @@ import { Text as SvgText } from "react-native-svg";
 import { StoreContext } from "../../Store";
 import { colors } from "../../common";
 import { getBoughtProducts } from "../../actions";
+import { Menu } from "../../components";
 
 const months = [
   "January",
@@ -53,7 +54,7 @@ const renderItem = ({ item }) => {
 
 const keyExtractor = ({ key }) => key;
 
-const Statistics = () => {
+const Statistics = ({ navigation }) => {
   const { store, dispatch } = useContext(StoreContext);
   const { bought } = store;
 
@@ -87,30 +88,39 @@ const Statistics = () => {
   const data = Object.values(reducedProductsByType);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>{months[new Date().getMonth()]}</Text>
-      <View>
-        <PieChart
-          style={styles.chart}
-          valueAccessor={({ item }) => item.amount}
-          data={data}
-          spacing={0}
-          outerRadius={"95%"}
-        >
-          <Labels />
-        </PieChart>
-        <View style={styles.total}>
-          <Text>{total.toFixed(2)}</Text>
+    <>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>{months[new Date().getMonth()]}</Text>
+        <View>
+          <PieChart
+            style={styles.chart}
+            valueAccessor={({ item }) => item.amount}
+            data={data}
+            spacing={0}
+            outerRadius={"95%"}
+          >
+            <Labels />
+          </PieChart>
+          <View style={styles.total}>
+            <Text>{total.toFixed(2)}</Text>
+          </View>
         </View>
-      </View>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-      />
-    </SafeAreaView>
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+        />
+      </SafeAreaView>
+      <Menu navigation={navigation} dispatch={dispatch} />
+    </>
   );
 };
+
+Statistics.navigationOptions = {
+  title: "Statistics"
+};
+
+export default Statistics;
 
 const styles = StyleSheet.create({
   container: {
@@ -151,9 +161,3 @@ const styles = StyleSheet.create({
     marginRight: 20
   }
 });
-
-Statistics.navigationOptions = {
-  title: "Statistics"
-};
-
-export default Statistics;
