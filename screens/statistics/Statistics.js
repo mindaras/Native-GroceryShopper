@@ -136,14 +136,13 @@ const styles = StyleSheet.create({
   chart: {
     height: 200,
     width: "100%",
-    marginTop: 60,
+    marginTop: 30,
     marginBottom: 30
   },
   total: {
     position: "absolute",
     width: "100%",
     height: "100%",
-    paddingTop: 30,
     justifyContent: "center",
     alignItems: "center"
   },
