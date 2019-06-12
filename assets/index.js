@@ -3,3 +3,4 @@ export { default as productsIconSource } from "./products.png";
 export { default as statisticsIconSource } from "./statistics.png";
 export { default as logoutIconSource } from "./logout.png";
 export { default as addIconSource } from "./add.png";
+export { default as budgetIconSource } from "./budget.png";

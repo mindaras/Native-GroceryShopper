@@ -9,7 +9,9 @@ import {
   refresh,
   refreshInitialState,
   bought,
-  boughtInitialState
+  boughtInitialState,
+  spendingBudget,
+  spendingBudgetInitialState
 } from "./reducers";
 
 const initialState = {
@@ -17,7 +19,8 @@ const initialState = {
   shoppingList: shoppingListInitialState,
   auth: authInitialState,
   refresh: refreshInitialState,
-  bought: boughtInitialState
+  bought: boughtInitialState,
+  spendingBudget: spendingBudgetInitialState
 };
 
 const reducer = (state, action) => {
@@ -34,6 +37,8 @@ const reducer = (state, action) => {
       return refresh(state, action);
     case "bought":
       return bought(state, action);
+    case "spendingBudget":
+      return spendingBudget(state, action);
     default:
       return state;
   }

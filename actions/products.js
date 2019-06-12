@@ -8,10 +8,10 @@ export const REMOVE_ITEM_FROM_PRODUCTS = "products_removeItem";
 
 export const getProducts = dispatch => async ({ refreshing }) => {
   try {
-    const payload = await request(endpoints.products.getAll, "GET");
+    const output = await request(endpoints.products.getAll, "GET");
 
-    if (!payload.message) {
-      dispatch({ type: GET_PRODUCTS, payload });
+    if (!output.message) {
+      dispatch({ type: GET_PRODUCTS, payload: output });
       if (refreshing) endProductsRefresh(dispatch);
     }
   } catch (e) {}
